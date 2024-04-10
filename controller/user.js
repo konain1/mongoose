@@ -22,14 +22,6 @@ async function createUser(req, res) {
 module.exports = {createUser};
 
   
-  // Example usage:
-//   createUser('john_doe', 'john@example.com', 'password123')
-//     .then(newUser => {
-//       console.log('New user:', newUser);
-//     })
-//     .catch(error => {
-//       console.error('Error:', error);
-//     });
 
 
-module.exports = {createUser}
+
