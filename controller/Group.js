@@ -16,6 +16,7 @@ async function createGroupIfNotExist(req,res) {
   
       // Find the group by name
       let group = await Group.findOne({ name: groupName });
+      console.log(group)
   
       if (!group) {
         // Create a new group if it doesn't exist
@@ -36,6 +37,17 @@ async function createGroupIfNotExist(req,res) {
     }
 
   }
+
+  async function GroupMembers(req,res){
+
+    let UserMember  = await User.findOne({username:req.body.username})
+    console.log(UserMember)
+
+    let memberOftheGroup = await Group.findOne({creator:UserMember._id})
+
+    res.json({ msg:{ Group : memberOftheGroup.name, max: memberOftheGroup.maxMembers}})
+
+  }
   
   
-  module.exports = {createGroupIfNotExist};
+  module.exports = {createGroupIfNotExist , GroupMembers };
