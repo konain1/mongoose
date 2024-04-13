@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const {createUser} = require('./controller/user');
-const {createGroupIfNotExist,GroupMembers} = require('./controller/Group')
+const {createGroupIfNotExist,GroupMembers, joinGroup} = require('./controller/Group')
 
 const bodyParser = require('body-parser');
 
@@ -23,6 +23,7 @@ mongoose.connect('mongodb+srv://konain7:Kaunain%4099@cluster0.rmyvhx6.mongodb.ne
   app.post('/',createUser)  
   app.post('/group',createGroupIfNotExist)
   app.get('/members',GroupMembers)
+  app.get('/joingroup',joinGroup)
 
 
 
