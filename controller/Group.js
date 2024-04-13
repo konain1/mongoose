@@ -1,4 +1,5 @@
 
+const { group } = require('console');
 const {User,Group} = require('../db/user')
 
 
@@ -36,16 +37,35 @@ async function createGroupIfNotExist(req,res) {
 
   }
 
-  async function GroupMembers(req,res){
+  async function GroupMembers(req, res) {
+    try {
+        let groupName = req.body.groupName;
 
-    let UserMember  = await User.findOne({username:req.body.username})
-    console.log(UserMember)
+        let group = await Group.findOne({ name: groupName });
 
-    let memberOftheGroup = await Group.findOne({creator:UserMember._id})
+        if (group) {
+            let groupMembersId = group.members;
 
-    res.json({ msg:{ Group : memberOftheGroup.name, max: memberOftheGroup.maxMembers}})
+            // Fetch the details of group members
+            let groupMembersDetails = [];
+            for (let memberId of groupMembersId) {
+                let memberDetails = await User.findById(memberId);
+                groupMembersDetails.push(memberDetails);
+            }
 
-  }
+            let usersOfTheGroup = groupMembersDetails.map((user)=>{return user.username})
+            console.log(usersOfTheGroup)
+
+            res.json({ groupMembers: usersOfTheGroup });
+        } else {
+            res.json({ error: "Group does not exist" });
+        }
+    } catch (error) {
+        console.error("Error fetching group members:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+}
+
   
 
   async function joinGroup(req, res) {
